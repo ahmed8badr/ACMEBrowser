@@ -1,5 +1,6 @@
 package com.example.acmebrowser
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         tabsList.add(HomeFragment())
 
+        binding.myPager.isUserInputEnabled = false
         binding.myPager.adapter = TabsAdapter(supportFragmentManager, lifecycle)
 
     }
@@ -32,5 +34,12 @@ class MainActivity : AppCompatActivity() {
     private inner class TabsAdapter(fa:FragmentManager,  lc: Lifecycle) : FragmentStateAdapter(fa,lc){
         override fun getItemCount(): Int = tabsList.size
         override fun createFragment(position: Int): Fragment = tabsList[position]
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun changeTab(url: String, fragment: Fragment){
+        tabsList.add(fragment)
+        binding.myPager.adapter?.notifyDataSetChanged()
+        binding.myPager.currentItem = tabsList.size - 1
     }
 }

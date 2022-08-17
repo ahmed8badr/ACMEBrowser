@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/rounded_corner.xml" value="0.1" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/searchbar.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/fragment_browse.xml" value="0.17074275362318841" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/fragment_home.xml" value="0.17074275362318841" />
       </map>
     </option>
