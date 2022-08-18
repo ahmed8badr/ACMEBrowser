@@ -2,7 +2,8 @@
     <string name="app_name">ACME Browser</string>
     <string name="enter_url">Enter URL</string>
     <string name="clear_btn">clear</string>
-    <string name="search">Search</string>
+    <string name="back_btn">back</string>
+    <string name="search">Google Search</string>
 
 
 </resources>

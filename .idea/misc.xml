@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/rounded_corner.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/searchbar.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/activity_main.xml" value="0.25" />

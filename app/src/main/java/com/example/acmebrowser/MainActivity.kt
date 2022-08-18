@@ -2,6 +2,7 @@ package com.example.acmebrowser
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -11,7 +12,7 @@ import com.example.acmebrowser.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     companion object{
         var tabsList: ArrayList<Fragment> = ArrayList()
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         tabsList.add(HomeFragment())
 
+
         binding.myPager.isUserInputEnabled = false
         binding.myPager.adapter = TabsAdapter(supportFragmentManager, lifecycle)
 
@@ -39,7 +41,29 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     fun changeTab(url: String, fragment: Fragment){
         tabsList.add(fragment)
+        binding.backBtn.visibility = View.VISIBLE
         binding.myPager.adapter?.notifyDataSetChanged()
         binding.myPager.currentItem = tabsList.size - 1
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onBackPressed() {
+
+        var frag:BrowseFragment? = null
+        try {
+            frag = tabsList[binding.myPager.currentItem] as BrowseFragment
+        }catch (e:Exception){}
+
+        when {
+            frag?.binding?.webView?.canGoBack() == true -> frag.binding.webView.goBack()
+            binding.myPager.currentItem != 0 ->{
+                binding.backBtn.visibility = View.GONE
+                tabsList.removeAt(binding.myPager.currentItem)
+                binding.myPager.adapter?.notifyDataSetChanged()
+                binding.myPager.currentItem = tabsList.size - 1
+            }
+            else -> super.onBackPressed()
+        }
+    }
+
 }
