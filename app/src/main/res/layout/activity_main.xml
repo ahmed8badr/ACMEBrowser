@@ -22,10 +22,11 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="8dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:padding="5dp"
                 android:orientation="horizontal"
                 android:id="@+id/inputField"
                 android:background="@drawable/rounded_corner">
@@ -43,12 +44,13 @@
                     android:layout_weight="1"
                     android:layout_marginHorizontal="10dp"
                     android:background="@null"
-                    android:hint="@string/enter_url"
                     android:textSize="14sp"
                     android:id="@+id/inputUrl"
                     android:inputType="textUri"
                     android:imeOptions="actionGo"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:autofillHints="@sting/enter_url"
+                    tools:ignore="LabelFor,NestedWeights" />
 
                 <ImageButton
                     android:id="@+id/clearBtn"
@@ -57,7 +59,20 @@
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/clear_btn"
                     android:src="@drawable/ic_baseline_cancel_20" />
+
             </LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="24dp"
+                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="8dp"
+                android:id="@+id/tabsBtn"
+                android:background="@drawable/tabs_text_view"
+                android:text="@string/one"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="center"/>
 
         </LinearLayout>
         <View
@@ -107,7 +122,8 @@
             android:background="?attr/selectableItemBackground"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/forwardBtn"
@@ -116,7 +132,8 @@
             android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_arrow_forward_24" />
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/reloadBtn"
@@ -125,7 +142,8 @@
             android:background="?attr/selectableItemBackground"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_refresh_24" />
+            android:src="@drawable/ic_baseline_refresh_24"
+            tools:ignore="ContentDescription" />
         <ImageButton
             android:id="@+id/bookBtn"
             android:layout_width="0dp"
@@ -133,7 +151,8 @@
             android:background="?attr/selectableItemBackground"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_bookmark_border_24" />
+            android:src="@drawable/ic_baseline_bookmark_border_24"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 

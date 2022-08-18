@@ -8,9 +8,12 @@
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/ic_baseline_link_24.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/rounded_corner.xml" value="0.1" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/searchbar.xml" value="0.1" />
-        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/drawable/tabs_text_view.xml" value="0.1" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/fragment_browse.xml" value="0.17074275362318841" />
         <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/fragment_home.xml" value="0.17074275362318841" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/tab.xml" value="0.25" />
+        <entry key="..\:/Exp/ACMEBrowser/app/src/main/res/layout/tabs_window.xml" value="0.17074275362318841" />
       </map>
     </option>
   </component>

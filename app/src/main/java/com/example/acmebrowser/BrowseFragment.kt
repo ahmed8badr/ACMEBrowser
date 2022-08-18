@@ -16,8 +16,8 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
 
     lateinit var binding: FragmentBrowseBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view  = inflater.inflate(R.layout.fragment_browse, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val view: View  = inflater.inflate(R.layout.fragment_browse, container, false)
         binding = FragmentBrowseBinding.bind(view)
 
 
@@ -28,6 +28,9 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
     override fun onResume() {
         super.onResume()
         val mainActivityRef = requireActivity() as MainActivity
+
+        MainActivity.tabsList[MainActivity.myPager.currentItem].name = binding.webView.url.toString()
+        MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
 
         mainActivityRef.binding.reloadBtn.isClickable = true
         mainActivityRef.binding.reloadBtn.setOnClickListener{
@@ -43,6 +46,7 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
                 override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
                     super.doUpdateVisitedHistory(view, url, isReload)
                     mainActivityRef.binding.inputUrl.setText(url)
+                    MainActivity.tabsList[MainActivity.myPager.currentItem].name = url.toString()
                 }
 
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {

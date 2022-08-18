@@ -5,6 +5,8 @@
     <string name="back_btn">back</string>
     <string name="logoIcon">logo</string>
     <string name="search">Google Search</string>
+    <string name="one">1</string>
+    <string name="website">website</string>
 
 
 </resources>
