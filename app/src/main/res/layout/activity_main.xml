@@ -21,46 +21,44 @@
             android:orientation="horizontal">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="8dp"
-            android:orientation="horizontal"
-            android:id="@+id/inputField"
-            android:background="@drawable/rounded_corner">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="8dp"
+                android:orientation="horizontal"
+                android:id="@+id/inputField"
+                android:background="@drawable/rounded_corner">
 
 
-            <ImageView
-                android:id="@+id/logoBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/logoIcon"
-                android:src="@drawable/ic_baseline_link_24"
-                android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/logoIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/logoIcon" />
 
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="10dp"
-                android:background="@null"
-                android:hint="@string/enter_url"
-                android:textSize="14sp"
-                android:id="@+id/inputUrl"
-                android:inputType="textUri"
-                android:imeOptions="actionGo"
-                android:singleLine="true"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@null"
+                    android:hint="@string/enter_url"
+                    android:textSize="14sp"
+                    android:id="@+id/inputUrl"
+                    android:inputType="textUri"
+                    android:imeOptions="actionGo"
+                    android:singleLine="true"/>
 
-            <ImageButton
-                android:id="@+id/clearBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/clear_btn"
-                android:src="@drawable/ic_baseline_cancel_20" />
+                <ImageButton
+                    android:id="@+id/clearBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/clear_btn"
+                    android:src="@drawable/ic_baseline_cancel_20" />
+            </LinearLayout>
 
-        </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -81,9 +79,62 @@
         android:id="@+id/myPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolBar"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E1E1E1"
+        android:id="@+id/divider2"
+        app:layout_constraintTop_toTopOf="@+id/bottomBar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#f3f3f3"
+        android:id="@+id/bottomBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_arrow_back_24" />
+
+        <ImageButton
+            android:id="@+id/forwardBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_arrow_forward_24" />
+
+        <ImageButton
+            android:id="@+id/reloadBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_refresh_24" />
+        <ImageButton
+            android:id="@+id/bookBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_bookmark_border_24" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

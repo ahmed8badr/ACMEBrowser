@@ -29,6 +29,11 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
         super.onResume()
         val mainActivityRef = requireActivity() as MainActivity
 
+        mainActivityRef.binding.reloadBtn.isClickable = true
+        mainActivityRef.binding.reloadBtn.setOnClickListener{
+            binding.webView.reload()
+        }
+
         binding.webView.apply {
             settings.javaScriptEnabled = true
             settings.setSupportZoom(true)
@@ -52,6 +57,14 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
                 }
             }
             webChromeClient = object: WebChromeClient(){
+
+                override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
+                    super.onReceivedIcon(view, icon)
+                    try {
+                        mainActivityRef.binding.logoIcon.setImageBitmap(icon)
+                    }catch (e:Exception){}
+                }
+
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
                     mainActivityRef.binding.progressBar.progress = newProgress

@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
         val mainActivityRef = requireActivity() as MainActivity
         mainActivityRef.binding.inputUrl.setText("")
         binding.searchView.setQuery("",false)
+        mainActivityRef.binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(result: String?): Boolean {
@@ -40,6 +41,15 @@ class HomeFragment : Fragment() {
             mainActivityRef.binding.inputUrl.setText("")
         }
 
+        mainActivityRef.binding.backBtn.setOnClickListener{
+            mainActivityRef.onBackPressed()
+        }
+
+        mainActivityRef.binding.forwardBtn.setOnClickListener{
+            mainActivityRef.onForwardPressed()
+        }
+
+        mainActivityRef.binding.reloadBtn.isClickable = false
 
         mainActivityRef.binding.inputUrl.setOnEditorActionListener(object: TextView.OnEditorActionListener{
             override fun onEditorAction(textView: TextView?, i: Int, keyEvent: KeyEvent?): Boolean {

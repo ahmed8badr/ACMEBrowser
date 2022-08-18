@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         tabsList.add(HomeFragment())
 
-
         binding.myPager.isUserInputEnabled = false
         binding.myPager.adapter = TabsAdapter(supportFragmentManager, lifecycle)
 
@@ -60,6 +59,17 @@ class MainActivity : AppCompatActivity() {
                 binding.myPager.currentItem = tabsList.size - 1
             }
             else -> super.onBackPressed()
+        }
+    }
+
+    fun onForwardPressed(){
+        var frag:BrowseFragment? = null
+        try {
+            frag = tabsList[binding.myPager.currentItem] as BrowseFragment
+        }catch (e:Exception){}
+        frag?.apply {
+            if(binding.webView.canGoForward())
+                binding.webView.goForward()
         }
     }
 
