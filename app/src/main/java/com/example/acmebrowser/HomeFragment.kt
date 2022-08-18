@@ -40,9 +40,6 @@ class HomeFragment : Fragment() {
             mainActivityRef.binding.inputUrl.setText("")
         }
 
-        mainActivityRef.binding.backBtn.setOnClickListener{
-            mainActivityRef.onBackPressed()
-        }
 
         mainActivityRef.binding.inputUrl.setOnEditorActionListener(object: TextView.OnEditorActionListener{
             override fun onEditorAction(textView: TextView?, i: Int, keyEvent: KeyEvent?): Boolean {

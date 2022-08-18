@@ -2,7 +2,6 @@ package com.example.acmebrowser
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     fun changeTab(url: String, fragment: Fragment){
         tabsList.add(fragment)
-        binding.backBtn.visibility = View.VISIBLE
         binding.myPager.adapter?.notifyDataSetChanged()
         binding.myPager.currentItem = tabsList.size - 1
     }
@@ -57,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         when {
             frag?.binding?.webView?.canGoBack() == true -> frag.binding.webView.goBack()
             binding.myPager.currentItem != 0 ->{
-                binding.backBtn.visibility = View.GONE
                 tabsList.removeAt(binding.myPager.currentItem)
                 binding.myPager.adapter?.notifyDataSetChanged()
                 binding.myPager.currentItem = tabsList.size - 1

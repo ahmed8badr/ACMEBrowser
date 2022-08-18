@@ -20,14 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/back_btn"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +30,14 @@
             android:id="@+id/inputField"
             android:background="@drawable/rounded_corner">
 
+
+            <ImageView
+                android:id="@+id/logoBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/logoIcon"
+                android:src="@drawable/ic_baseline_link_24"
+                android:visibility="visible"/>
 
             <EditText
                 android:layout_width="0dp"
@@ -58,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/clear_btn"
-                android:src="@drawable/ic_baseline_cancel_24" />
+                android:src="@drawable/ic_baseline_cancel_20" />
 
         </LinearLayout>
         </LinearLayout>
