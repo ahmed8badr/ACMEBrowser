@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         when {
             frag?.binding?.webView?.canGoBack() == true -> frag.binding.webView.goBack()
             binding.myPager.currentItem != 0 ->{
+                binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
                 tabsList.removeAt(binding.myPager.currentItem)
                 binding.myPager.adapter?.notifyDataSetChanged()
                 binding.myPager.currentItem = tabsList.size - 1
