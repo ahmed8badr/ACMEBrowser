@@ -38,7 +38,7 @@
                     android:layout_height="20dp"
                     android:contentDescription="@string/logoIcon" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -46,10 +46,9 @@
                     android:background="@null"
                     android:textSize="14sp"
                     android:id="@+id/inputUrl"
-                    android:inputType="textUri"
+                    android:hint="@string/enter_url"
                     android:imeOptions="actionGo"
                     android:singleLine="true"
-                    android:autofillHints="@sting/enter_url"
                     tools:ignore="LabelFor,NestedWeights" />
 
                 <ImageButton
@@ -74,7 +73,7 @@
                 android:textSize="15sp"
                 android:gravity="center"/>
 
-        </LinearLayout>
+            </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -145,7 +144,7 @@
             android:src="@drawable/ic_baseline_refresh_24"
             tools:ignore="ContentDescription" />
         <ImageButton
-            android:id="@+id/bookBtn"
+            android:id="@+id/bookmarkBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground"

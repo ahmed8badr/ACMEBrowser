@@ -7,6 +7,8 @@
     <string name="search">Google Search</string>
     <string name="one">1</string>
     <string name="website">website</string>
+    <string name="bookmark">bookmark</string>
+    <string name="bookmark_name">Bookmark Name</string>
 
 
 </resources>

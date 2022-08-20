@@ -1,4 +1,4 @@
-package com.example.acmebrowser
+package com.example.acmebrowser.fragments
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -9,6 +9,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.acmebrowser.MainActivity
+import com.example.acmebrowser.R
+import com.example.acmebrowser.adapters.BookmarkAdapter
+import com.example.acmebrowser.changeTab
 import com.example.acmebrowser.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -24,6 +29,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         val mainActivityRef = requireActivity() as MainActivity
 
         MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
@@ -33,40 +39,36 @@ class HomeFragment : Fragment() {
         binding.searchView.setQuery("",false)
         mainActivityRef.binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
 
+        mainActivityRef.binding.reloadBtn.isClickable = false
+
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(result: String?): Boolean {
-                mainActivityRef.changeTab(result!!, BrowseFragment("https://www.google.com/search?q=$result"))
+                var link = result
+                if(link!!.contains(".com",ignoreCase = true) && !link.contains("http")) { link = "http://$link"; }
+                changeTab(link, BrowseFragment(link))
                 return true
             }
             override fun onQueryTextChange(p0: String?): Boolean = false
         })
 
-        mainActivityRef.binding.clearBtn.setOnClickListener{
-            mainActivityRef.binding.inputUrl.setText("")
-        }
-
-        mainActivityRef.binding.backBtn.setOnClickListener{
-            mainActivityRef.onBackPressed()
-        }
-
-        mainActivityRef.binding.forwardBtn.setOnClickListener{
-            mainActivityRef.onForwardPressed()
-        }
-
-        mainActivityRef.binding.reloadBtn.isClickable = false
-
         mainActivityRef.binding.inputUrl.setOnEditorActionListener(object: TextView.OnEditorActionListener{
             override fun onEditorAction(textView: TextView?, i: Int, keyEvent: KeyEvent?): Boolean {
-                if(i==EditorInfo.IME_ACTION_GO || i==EditorInfo.IME_ACTION_DONE){
-                    if(mainActivityRef.binding.inputUrl.text.toString().contains(".com",ignoreCase = true))
-                    mainActivityRef.changeTab(mainActivityRef.binding.inputUrl.text.toString(),BrowseFragment("https://" + mainActivityRef.binding.inputUrl.text.toString()))
-                    else mainActivityRef.changeTab(mainActivityRef.binding.inputUrl.text.toString(),BrowseFragment("https://www.google.com/search?q=" + mainActivityRef.binding.inputUrl.text.toString()))
+                if(i== EditorInfo.IME_ACTION_GO){
+                    var link: String = mainActivityRef.binding.inputUrl.text.toString()
+                    if(link.contains(".com", ignoreCase = true) && !link.contains("http")) { link = "http://$link" }
+                    changeTab(link,
+                        BrowseFragment(link))
                     return true
                 }
                 return false
             }
 
         })
+
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.setItemViewCacheSize(5)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 5)
+        binding.recyclerView.adapter = BookmarkAdapter(requireContext())
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.acmebrowser
+package com.example.acmebrowser.dataclass
 
 import androidx.fragment.app.Fragment
 

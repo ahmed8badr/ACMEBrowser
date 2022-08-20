@@ -1,4 +1,4 @@
-package com.example.acmebrowser
+package com.example.acmebrowser.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -6,20 +6,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import com.example.acmebrowser.MainActivity
+import com.example.acmebrowser.R
 import com.example.acmebrowser.databinding.FragmentBrowseBinding
+import java.io.ByteArrayOutputStream
 
 class BrowseFragment(private var urlNew: String) : Fragment() {
 
     lateinit var binding: FragmentBrowseBinding
+    var logoIcon: Bitmap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view: View  = inflater.inflate(R.layout.fragment_browse, container, false)
+        val view = inflater.inflate(R.layout.fragment_browse, container, false)
         binding = FragmentBrowseBinding.bind(view)
 
+        binding.webView.apply {
+            when{
+                URLUtil.isValidUrl(urlNew) -> loadUrl(urlNew)
+                else -> loadUrl("https://www.google.com/search?q=$urlNew")
+            }
+        }
 
         return view
     }
@@ -58,6 +69,7 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     mainActivityRef.binding.progressBar.visibility = View.GONE
+                    binding.webView.zoomOut()
                 }
             }
             webChromeClient = object: WebChromeClient(){
@@ -66,6 +78,13 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
                     super.onReceivedIcon(view, icon)
                     try {
                         mainActivityRef.binding.logoIcon.setImageBitmap(icon)
+                        logoIcon = icon
+                        MainActivity.bookmarkIndex = mainActivityRef.isBookmarked(view?.url!!)
+                        if(MainActivity.bookmarkIndex != -1){
+                            val array = ByteArrayOutputStream()
+                            icon!!.compress(Bitmap.CompressFormat.PNG, 100, array)
+                            MainActivity.bookmarkList[MainActivity.bookmarkIndex].image = array.toByteArray()
+                        }
                     }catch (e:Exception){}
                 }
 
@@ -74,8 +93,7 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
                     mainActivityRef.binding.progressBar.progress = newProgress
                 }
             }
-
-            loadUrl(urlNew)
+            binding.webView.reload()
         }
     }
 }

@@ -12,19 +12,28 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.acmebrowser.MainActivity.Companion.myPager
+import com.example.acmebrowser.adapters.TabAdapter
 import com.example.acmebrowser.databinding.ActivityMainBinding
+import com.example.acmebrowser.databinding.BookmarkWindowBinding
 import com.example.acmebrowser.databinding.TabsWindowBinding
+import com.example.acmebrowser.dataclass.Bookmark
+import com.example.acmebrowser.dataclass.Tab
+import com.example.acmebrowser.fragments.BrowseFragment
+import com.example.acmebrowser.fragments.HomeFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 
 class MainActivity : AppCompatActivity() {
-
+    var frag: BrowseFragment? = null
     lateinit var binding: ActivityMainBinding
 
-    companion object{
+    companion object {
         var tabsList: ArrayList<Tab> = ArrayList()
         lateinit var myPager: ViewPager2
         lateinit var tabsBtn: MaterialTextView
+        var bookmarkList: ArrayList<Bookmark> = ArrayList()
+        var bookmarkIndex: Int = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +43,11 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        tabsList.add(Tab("Home",HomeFragment()))
+        tabsList.add(Tab("Home", HomeFragment()))
 
         binding.myPager.isUserInputEnabled = false
         binding.myPager.adapter = TabsAdapter(supportFragmentManager, lifecycle)
+        binding.myPager.isUserInputEnabled = false
         myPager = binding.myPager
         tabsBtn = binding.tabsBtn
 
@@ -45,48 +55,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun initializeView(){
-        binding.tabsBtn.setOnClickListener{
-            val viewTabs = layoutInflater.inflate(R.layout.tabs_window, binding.root,false)
-            val bindingTabs = TabsWindowBinding.bind(viewTabs)
-            val dialogTabs = MaterialAlertDialogBuilder(this, R.style.roundCornerDialog).setView(viewTabs)
-                .setTitle("Select Tab")
-                .setPositiveButton("new tab"){self,_->
-                    changeTab("Home",HomeFragment())
-                    self.dismiss()}
-                .create()
-
-            bindingTabs.tabsRV.setHasFixedSize(true)
-            bindingTabs.tabsRV.layoutManager = LinearLayoutManager(this)
-            bindingTabs.tabsRV.adapter = TabAdapter(this,dialogTabs)
-
-            dialogTabs.show()
-            val pBtn = dialogTabs.getButton(AlertDialog.BUTTON_POSITIVE)
-
-            pBtn.isAllCaps = false
-            pBtn.setTextColor(Color.BLACK)
-            pBtn.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_baseline_add_24,theme)
-                ,null,null,null)
-        }
-    }
-
-    private inner class TabsAdapter(fa:FragmentManager,  lc: Lifecycle) : FragmentStateAdapter(fa,lc){
-        override fun getItemCount(): Int = tabsList.size
-        override fun createFragment(position: Int): Fragment = tabsList[position].fragment
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun changeTab(url: String, fragment: Fragment){
-        tabsList.add(Tab(url,fragment))
-        myPager.adapter?.notifyDataSetChanged()
-        myPager.currentItem = tabsList.size - 1
-        tabsBtn.text = tabsList.size.toString()
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onBackPressed() {
-
-        var frag:BrowseFragment? = null
+        var frag: BrowseFragment? = null
         try {
             frag = tabsList[binding.myPager.currentItem].fragment as BrowseFragment
         }catch (e:Exception){}
@@ -102,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onBackPressed()
         }
     }
-
     fun onForwardPressed(){
         var frag:BrowseFragment? = null
         try {
@@ -114,4 +84,90 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private inner class TabsAdapter(fa:FragmentManager,  lc: Lifecycle) : FragmentStateAdapter(fa,lc){
+        override fun getItemCount(): Int = tabsList.size
+        override fun createFragment(position: Int): Fragment = tabsList[position].fragment
+    }
+
+    private fun initializeView() {
+
+        binding.tabsBtn.setOnClickListener{
+            val viewTabs = layoutInflater.inflate(R.layout.tabs_window, binding.root,false)
+            val bindingTabs = TabsWindowBinding.bind(viewTabs)
+            val dialogTabs = MaterialAlertDialogBuilder(this, R.style.roundCornerDialog).setView(viewTabs)
+                .setTitle("Select Tab")
+                .setPositiveButton("new tab"){self,_->
+                    changeTab("Home", HomeFragment())
+                    self.dismiss()}
+                .create()
+
+            bindingTabs.tabsRV.setHasFixedSize(true)
+            bindingTabs.tabsRV.layoutManager = LinearLayoutManager(this)
+            bindingTabs.tabsRV.adapter = TabAdapter(this,dialogTabs)
+
+            dialogTabs.show()
+            val pBtn = dialogTabs.getButton(AlertDialog.BUTTON_POSITIVE)
+            pBtn.isAllCaps = false
+            pBtn.setTextColor(Color.BLACK)
+            pBtn.setCompoundDrawablesWithIntrinsicBounds(
+                ResourcesCompat.getDrawable(resources,R.drawable.ic_baseline_add_24,theme)
+                ,null,null,null)
+        }
+        binding.clearBtn.setOnClickListener{
+            binding.inputUrl.setText("")
+        }
+
+        frag?.let { bookmarkIndex = isBookmarked(it.binding.webView.url!!) }
+
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+        binding.forwardBtn.setOnClickListener{
+            onForwardPressed()
+        }
+        binding.bookmarkBtn.setOnClickListener {
+            frag?.let {
+                if ( bookmarkIndex == -1){
+                val viewBM = layoutInflater.inflate(R.layout.bookmark_window, binding.root, false)
+                val bindingBM = BookmarkWindowBinding.bind(viewBM)
+                val dialogBM = MaterialAlertDialogBuilder(this)
+                    .setTitle("Add Bookmark")
+                    .setMessage("Url:${it.binding.webView.url}")
+                    .setPositiveButton("add") { self, _ ->
+                        bookmarkList.add(Bookmark(name = bindingBM.bookmarkTitle.text.toString(), url = it.binding.webView.url!!))
+                        self.dismiss() }
+                    .setNegativeButton("cancel") { self, _ -> self.dismiss() }
+                    .setView(viewBM).create()
+
+                dialogBM.show()
+                    bindingBM.bookmarkTitle.setText(it.binding.webView.title)
+            }else{
+                val dialogBM = MaterialAlertDialogBuilder(this)
+                    .setTitle("Remove Bookmark")
+                    .setMessage("Url:${it.binding.webView.url}")
+                    .setPositiveButton("remove") { self, _ ->
+                        bookmarkList.removeAt(bookmarkIndex)
+                        self.dismiss() }
+                    .setNegativeButton("cancel") { self, _ -> self.dismiss() }
+                    .create()
+                    dialogBM.show()
+                }
+            }
+        }
+
+    }
+    fun isBookmarked(url: String): Int{
+        bookmarkList.forEachIndexed { index, bookmark ->
+            if(bookmark.url == url) return index
+        }
+        return -1
+    }
+}
+
+@SuppressLint("NotifyDataSetChanged")
+fun changeTab(url: String, fragment: Fragment, isBackground: Boolean = false){
+    MainActivity.tabsList.add(Tab(name = url,fragment = fragment))
+    MainActivity.myPager.adapter?.notifyDataSetChanged()
+    MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
+    if(!isBackground) myPager.currentItem = MainActivity.tabsList.size - 1
 }

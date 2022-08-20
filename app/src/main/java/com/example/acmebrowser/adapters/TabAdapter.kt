@@ -1,4 +1,4 @@
-package com.example.acmebrowser
+package com.example.acmebrowser.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.example.acmebrowser.MainActivity
 import com.example.acmebrowser.databinding.TabBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -28,9 +29,8 @@ class TabAdapter(private val context: Context, private val dialog: AlertDialog):
             MainActivity.myPager.currentItem = position
             dialog.dismiss()
         }
-
         holder.delTab.setOnClickListener{
-            if(MainActivity.tabsList.size == 1)
+            if(MainActivity.tabsList.size == 1 || position == MainActivity.myPager.currentItem)
                 Snackbar.make(MainActivity.myPager,"Can't Remove current tab",3000).show()
             else{
                 MainActivity.tabsList.removeAt(position)
