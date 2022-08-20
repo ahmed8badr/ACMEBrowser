@@ -32,6 +32,8 @@ class HomeFragment : Fragment() {
 
         val mainActivityRef = requireActivity() as MainActivity
 
+        mainActivityRef.binding.bookmarkBtn.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+
         MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
         MainActivity.tabsList[MainActivity.myPager.currentItem].name = "Home"
 
@@ -40,6 +42,7 @@ class HomeFragment : Fragment() {
         mainActivityRef.binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
 
         mainActivityRef.binding.reloadBtn.isClickable = false
+        mainActivityRef.binding.bookmarkBtn.isClickable = false
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(result: String?): Boolean {

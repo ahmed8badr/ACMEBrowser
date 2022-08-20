@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             onForwardPressed()
         }
         binding.bookmarkBtn.setOnClickListener {
+            frag = tabsList[binding.myPager.currentItem].fragment as BrowseFragment
             frag?.let {
                 bookmarkIndex = isBookmarked(it.binding.webView.url!!)
                 if ( bookmarkIndex == -1){
@@ -146,6 +147,7 @@ class MainActivity : AppCompatActivity() {
                             bookmarkList.add(
                                 Bookmark(name = bindingBM.bookmarkTitle.text.toString(), url = it.binding.webView.url!!))
                         }
+                        binding.bookmarkBtn.setImageResource(R.drawable.ic_baseline_bookmark_24)
                         self.dismiss() }
                     .setNegativeButton("cancel") { self, _ -> self.dismiss() }
                     .setView(viewBM).create()
@@ -158,6 +160,7 @@ class MainActivity : AppCompatActivity() {
                     .setMessage("Url:${it.binding.webView.url}")
                     .setPositiveButton("remove") { self, _ ->
                         bookmarkList.removeAt(bookmarkIndex)
+                        binding.bookmarkBtn.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
                         self.dismiss() }
                     .setNegativeButton("cancel") { self, _ -> self.dismiss() }
                     .create()

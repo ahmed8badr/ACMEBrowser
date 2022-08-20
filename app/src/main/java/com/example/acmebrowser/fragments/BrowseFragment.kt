@@ -39,11 +39,14 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
     override fun onResume() {
         super.onResume()
         val mainActivityRef = requireActivity() as MainActivity
+        mainActivityRef.binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
 
         MainActivity.tabsList[MainActivity.myPager.currentItem].name = binding.webView.url.toString()
         MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
 
         mainActivityRef.binding.reloadBtn.isClickable = true
+        mainActivityRef.binding.bookmarkBtn.isClickable = true
+
         mainActivityRef.binding.reloadBtn.setOnClickListener{
             binding.webView.reload()
         }
@@ -56,6 +59,9 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
             webViewClient = object: WebViewClient(){
                 override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
                     super.doUpdateVisitedHistory(view, url, isReload)
+                    if (mainActivityRef.isBookmarked(binding.webView.url!!) != -1){
+                        mainActivityRef.binding.bookmarkBtn.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                    } else mainActivityRef.binding.bookmarkBtn.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
                     mainActivityRef.binding.inputUrl.setText(url)
                     MainActivity.tabsList[MainActivity.myPager.currentItem].name = url.toString()
                 }
