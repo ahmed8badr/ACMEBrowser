@@ -96,4 +96,9 @@ class BrowseFragment(private var urlNew: String) : Fragment() {
             binding.webView.reload()
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as MainActivity).setBookmarks()
+    }
 }

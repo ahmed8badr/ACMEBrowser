@@ -1,6 +1,7 @@
 package com.example.acmebrowser
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -23,9 +24,12 @@ import com.example.acmebrowser.fragments.BrowseFragment
 import com.example.acmebrowser.fragments.HomeFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
-    var frag: BrowseFragment? = null
+    private var frag: BrowseFragment? = null
     lateinit var binding: ActivityMainBinding
 
     companion object {
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+        getBookmarks()
 
         tabsList.add(Tab("Home", HomeFragment()))
 
@@ -123,7 +128,6 @@ class MainActivity : AppCompatActivity() {
             onForwardPressed()
         }
         binding.bookmarkBtn.setOnClickListener {
-
             frag?.let {
                 bookmarkIndex = isBookmarked(it.binding.webView.url!!)
                 if ( bookmarkIndex == -1){
@@ -133,7 +137,15 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("Add Bookmark")
                     .setMessage("Url:${it.binding.webView.url}")
                     .setPositiveButton("add") { self, _ ->
-                        bookmarkList.add(Bookmark(name = bindingBM.bookmarkTitle.text.toString(), url = it.binding.webView.url!!))
+                        try {
+                            val array = ByteArrayOutputStream()
+                            it.logoIcon?.compress(Bitmap.CompressFormat.PNG, 100, array)
+                            bookmarkList.add(
+                                Bookmark(name = bindingBM.bookmarkTitle.text.toString(), url = it.binding.webView.url!!, array.toByteArray()))
+                        }catch (e:Exception){
+                            bookmarkList.add(
+                                Bookmark(name = bindingBM.bookmarkTitle.text.toString(), url = it.binding.webView.url!!))
+                        }
                         self.dismiss() }
                     .setNegativeButton("cancel") { self, _ -> self.dismiss() }
                     .setView(viewBM).create()
@@ -153,13 +165,28 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
+
     fun isBookmarked(url: String): Int{
         bookmarkList.forEachIndexed { index, bookmark ->
             if(bookmark.url == url) return index
         }
         return -1
+    }
+    fun setBookmarks(){
+        val editor = getSharedPreferences("BOOKMARKS", MODE_PRIVATE).edit()
+        val data = GsonBuilder().create().toJson(bookmarkList)
+        editor.putString("bookmarkList", data)
+        editor.apply()
+    }
+    private fun getBookmarks(){
+        bookmarkList = ArrayList()
+        val editor = getSharedPreferences("BOOKMARKS", MODE_PRIVATE)
+        val data = editor.getString("bookmarkList", null)
+        if (data != null){
+            val list: ArrayList<Bookmark> = GsonBuilder().create().fromJson(data, object: TypeToken<ArrayList<Bookmark>>(){}.type)
+            bookmarkList.addAll(list)
+        }
     }
 }
 
