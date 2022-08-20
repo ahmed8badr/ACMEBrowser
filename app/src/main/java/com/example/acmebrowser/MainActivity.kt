@@ -57,13 +57,12 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onBackPressed() {
-        var frag: BrowseFragment? = null
         try {
             frag = tabsList[binding.myPager.currentItem].fragment as BrowseFragment
         }catch (e:Exception){}
 
         when {
-            frag?.binding?.webView?.canGoBack() == true -> frag.binding.webView.goBack()
+            frag?.binding?.webView?.canGoBack() == true -> frag!!.binding.webView.goBack()
             binding.myPager.currentItem != 0 ->{
                 binding.logoIcon.setImageResource(R.drawable.ic_baseline_link_24)
                 tabsList.removeAt(binding.myPager.currentItem)
@@ -117,8 +116,6 @@ class MainActivity : AppCompatActivity() {
             binding.inputUrl.setText("")
         }
 
-        frag?.let { bookmarkIndex = isBookmarked(it.binding.webView.url!!) }
-
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
@@ -126,7 +123,9 @@ class MainActivity : AppCompatActivity() {
             onForwardPressed()
         }
         binding.bookmarkBtn.setOnClickListener {
+
             frag?.let {
+                bookmarkIndex = isBookmarked(it.binding.webView.url!!)
                 if ( bookmarkIndex == -1){
                 val viewBM = layoutInflater.inflate(R.layout.bookmark_window, binding.root, false)
                 val bindingBM = BookmarkWindowBinding.bind(viewBM)
@@ -167,7 +166,7 @@ class MainActivity : AppCompatActivity() {
 @SuppressLint("NotifyDataSetChanged")
 fun changeTab(url: String, fragment: Fragment, isBackground: Boolean = false){
     MainActivity.tabsList.add(Tab(name = url,fragment = fragment))
-    MainActivity.myPager.adapter?.notifyDataSetChanged()
+    myPager.adapter?.notifyDataSetChanged()
     MainActivity.tabsBtn.text = MainActivity.tabsList.size.toString()
     if(!isBackground) myPager.currentItem = MainActivity.tabsList.size - 1
 }
