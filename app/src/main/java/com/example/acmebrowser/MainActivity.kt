@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onBackPressed()
         }
     }
-    fun onForwardPressed(){
+    private fun onForwardPressed(){
         var frag:BrowseFragment? = null
         try {
             frag = tabsList[binding.myPager.currentItem].fragment as BrowseFragment
